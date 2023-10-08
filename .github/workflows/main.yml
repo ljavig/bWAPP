@@ -1,0 +1,56 @@
+name: Configuración del proyecto, despliegue y escaneo DAST para bWAPP
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v2
+
+      - name: Instalar las dependencias
+        run: npm install
+
+      - name: Compilar el proyecto
+        run: npm run build
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v2
+
+      - name: Instalar las dependencias
+        run: npm install
+
+      - name: Compilar el proyecto
+        run: npm run build
+
+      - name: Desplegar el proyecto
+        run: |
+          cd dist
+          sudo cp -r . /var/www/html
+
+  dast-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v2
+
+      - name: Instalar las dependencias
+        run: npm install
+
+      - name: Compilar el proyecto
+        run: npm run build
+
+      - name: Ejecutar el escaneo DAST
+        uses: soos-io/soos-dast-github-action@v1
+        with:
+          url: https://<dirección IP del corredor>:<puerto del corredor>/bWAPP
+          level: full
