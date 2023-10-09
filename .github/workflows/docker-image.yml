@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker build + run + DAST
 
 on:
   push:
@@ -10,9 +10,31 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: tutum/lamp
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+  
+  run-docker:
+
+    runs-on: tutum/lamp
+
+    steps:
+    - name: Run the Docker image
+      run: docker run -d -p 80:80 ljavig/bwapp
+
+  dast-scan:
+
+    runs-on: tutum/lamp
+
+    steps:
+    - name: Clone the repository
+      uses: actions/checkout@v2
+
+    - name: Run the DAST scan
+      uses: soos-io/soos-dast-github-action@v1
+      with:
+        url: https://<dirección IP del corredor>:<puerto del corredor>/bwapp
+        level: full
