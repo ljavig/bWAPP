@@ -10,7 +10,7 @@ jobs:
 
   build:
 
-    runs-on: tutum/lamp
+    runs-on: ubuntu:lastest
 
     steps:
     - uses: actions/checkout@v2
@@ -19,7 +19,7 @@ jobs:
   
   run-docker:
 
-    runs-on: tutum/lamp
+    runs-on: ubuntu:lastest
 
     steps:
     - name: Run the Docker image
@@ -27,7 +27,7 @@ jobs:
 
   dast-scan:
 
-    runs-on: tutum/lamp
+    runs-on: ubuntu:lastest
 
     steps:
     - name: Clone the repository
